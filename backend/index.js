@@ -5,6 +5,8 @@ import path from "path";
 
 import connectDB from "./config/db.js";
 
+import userRoutes from "./routes/userRoutes.js";
+
 dotenv.config();
 connectDB();
 
