@@ -22,8 +22,17 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const [logoutApiCall] = useLoginMutation();
+  const [logoutApiCall] = useLoginMutation();
 
+  const logoutHandler = async () => {
+  try {
+    // optional: await logoutApiCall().unwrap();
+    dispatch(logout());
+    navigate('/login');
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 
   return (
@@ -34,7 +43,7 @@ const Navigation = () => {
         <div className="flex justify-center items-center mb-[2rem]">
           <Link to='/' className="flex items-center transition-transform transform hover:translate-x-2">
             <AiOutlineHome className='text-white mr-2 mt-[3rem]' size={26}/>
-            <span className='hidden nav-item-name mt-[3rem'>Home</span>
+            <span className='hidden nav-item-name mt-[3rem]'>Home</span>
           </Link>
           <Link to='/movies' className="flex items-center ml-6 transition-transform transform hover:translate-x-2">
             <MdOutlineLocalMovies className='text-white mr-2 mt-[3rem]' size={26}/>
