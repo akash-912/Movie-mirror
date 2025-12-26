@@ -13,7 +13,7 @@ import {
 import { authenticate,authorizeAdmin } from "../middlewares/authMiddleware.js";
 const userRoutes = express.Router()
 
-userRoutes.route('/register').post(createUser).get(authenticate,authorizeAdmin, getAllUsers);
+userRoutes.route('/').post(createUser).get(authenticate,authorizeAdmin, getAllUsers);
 userRoutes.post('/auth',loginUser);
 userRoutes.post('/logout',logCurrentUser);
 
