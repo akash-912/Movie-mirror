@@ -9,7 +9,9 @@ import {
     getAllMovies,
     getSpecificMovies,
     updateMovie,
-    movieReview
+    movieReview,
+    deleteMovie,
+    deleteReview
 } from "../controllers/movieController.js";
 
 // Middlewares
@@ -28,6 +30,7 @@ router.post('/:id/reviews',authenticate,checkId,movieReview);
 
 router.post('/create-movie',authenticate,authorizeAdmin, createMovie);
 router.put('/update-movie/:id',authenticate,authorizeAdmin,updateMovie);
-
+router.delete('/delete-movie/:id',authenticate,authorizeAdmin,deleteMovie)
+router.delete('/delete-comment',authenticate,authorizeAdmin,deleteReview)
 
 export default router;
