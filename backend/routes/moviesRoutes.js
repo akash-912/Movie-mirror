@@ -11,7 +11,10 @@ import {
     updateMovie,
     movieReview,
     deleteMovie,
-    deleteReview
+    deleteReview,
+    getNewMovies,
+    getTopMovies,
+    getRandomMovies
 } from "../controllers/movieController.js";
 
 // Middlewares
@@ -22,6 +25,9 @@ import checkId from "../middlewares/CheckId.js";
 // Public Routes
 router.get('/all-movies',getAllMovies);
 router.get('/specific-movie/:id',getSpecificMovies);
+router.get('/new-movies',getNewMovies);
+router.get('/top-movies',getTopMovies);
+router.get('/random-movies',getRandomMovies)
 
 // Restricted Routes
 router.post('/:id/reviews',authenticate,checkId,movieReview);
