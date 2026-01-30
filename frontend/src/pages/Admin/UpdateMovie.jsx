@@ -35,14 +35,75 @@ const UpdateMovie = () => {
 
     const [ updateMovie, {isLoading: isUpdatingMovie},] = useUpdateMovieMutation();
 
-      const [
-    uploadImage,
-    { isLoading: isUploadingImage, error: uploadImageErrorDetails },
-  ] = useUploadImageMutation();
-
-
-
+    const [ uploadImage, { isLoading: isUploadingImage, error: uploadImageErrorDetails },] = useUploadImageMutation();
     const { deleteMovie } = useDeleteMovieMutation();
+
+    const handleChange = (e) =>{
+      const { name, value } = e.target;
+      setMovieData((prevData) => ({
+        ...prevData,
+        [name] : value,
+      }));
+    };
+
+    const handleImageChange = (e) =>{
+      const file = e.target.files[0];
+      setSelectedImage(file);
+    }
+
+    const handleUpdateMovie = async () =>{
+      try{
+        if(
+          !movieData.name ||
+          !movieData.year ||
+          !movieData.detail ||
+          !movieData.cast){
+          toast.error("Please fill in all required fields");
+          return;
+        }
+
+        let uplodaedImagePath = movieData.image;
+
+        if(selectedImage) {
+          const formData = new FormData();
+          formData.append("image", selectedImage);
+          const uploadingImageResponse = await uploadImage(formData);
+
+          if(uploadingImageResponse.data){
+            uplodaedImagePath = uploadingImageResponse.data.image;
+          }else{
+            console.error("failed to upload image: ", uploadImageErrorDetails);
+            toast.error("Failed to upload image");
+            return;
+          }
+        }
+
+        await updateMovie({
+          id: id,
+          updatedMovie: {
+            ...movieData,
+            image: uplodaedImagePath,
+          },
+        });
+
+        navigate("/movies");
+      }catch(error){
+        console.error("Failed to update movie: ", error);
+      }
+    }
+
+
+    const handleDeleteMovie = async () =>{
+      try{
+        toast.success("Movie deleted successfully");
+        await deleteMovie(id);
+        navigate("/movies");
+
+      }catch(error) {
+        console.error("Failed to delete movie: ",error);
+        toast.error("Failed to delete movie: ", error?.message);
+      }
+    }
   return (
     <div className="container flex justify-center items-center mt-4">
         <form>
@@ -53,7 +114,7 @@ const UpdateMovie = () => {
                     <input type="text" 
                     name="name"
                     value={movieData.name}
-                    // onChange={handleChange}
+                    onChange={handleChange}
                     className="border px-2 py-1 w-full" />
                 </label>
 
@@ -62,9 +123,9 @@ const UpdateMovie = () => {
                 <label className="block">
                     Year: 
                     <input type="number" 
-                    name="Year"
+                    name="year"
                     value={movieData.year}
-                    // onChange={handleChange}
+                    onChange={handleChange}
                     className="border px-2 py-1 w-full" />
                 </label>
 
@@ -74,7 +135,7 @@ const UpdateMovie = () => {
                     Detail: 
                     <textarea name="detail" 
                         value={movieData.detail}
-                        // onChange={handleChange}
+                        onChange={handleChange}
                         className="border px-2 py-1 w-full"
                         />
                 </label>
@@ -112,14 +173,14 @@ const UpdateMovie = () => {
             <input
               type="file"
               accept="image/*"
-            //   onChange={handleImageChange}
+              onChange={handleImageChange}
               style={{ display: !selectedImage ? "none" : "block" }}
             />
           </label>
         </div>
         <button
           type="button"
-        //   onClick={handleUpdateMovie}
+          onClick={handleUpdateMovie}
           className="bg-teal-500 text-white px-4 py-2 rounded"
           disabled={isUpdatingMovie || isUploadingImage}
         >
@@ -128,7 +189,7 @@ const UpdateMovie = () => {
 
         <button
           type="button"
-        //   onClick={handleDeleteMovie}
+          onClick={handleDeleteMovie}
           className="bg-red-500 text-white px-4 py-2 rounded ml-2"
           disabled={isUpdatingMovie || isUploadingImage}
         >
