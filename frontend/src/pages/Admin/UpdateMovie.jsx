@@ -36,7 +36,7 @@ const UpdateMovie = () => {
     const [ updateMovie, {isLoading: isUpdatingMovie},] = useUpdateMovieMutation();
 
     const [ uploadImage, { isLoading: isUploadingImage, error: uploadImageErrorDetails },] = useUploadImageMutation();
-    const { deleteMovie } = useDeleteMovieMutation();
+    const [ deleteMovie ] = useDeleteMovieMutation();
 
     const handleChange = (e) =>{
       const { name, value } = e.target;
@@ -93,17 +93,16 @@ const UpdateMovie = () => {
     }
 
 
-    const handleDeleteMovie = async () =>{
-      try{
-        toast.success("Movie deleted successfully");
-        await deleteMovie(id);
-        navigate("/movies");
-
-      }catch(error) {
-        console.error("Failed to delete movie: ",error);
-        toast.error("Failed to delete movie: ", error?.message);
-      }
+    const handleDeleteMovie = async () => {
+    try {
+      toast.success("Movie deleted successfully");
+      await deleteMovie({id});
+      navigate("/movies");
+    } catch (error) {
+      console.error("Failed to delete movie:", error);
+      toast.error(`Failed to delete movie: ${error?.message}`);
     }
+  };
   return (
     <div className="container flex justify-center items-center mt-4">
         <form>
