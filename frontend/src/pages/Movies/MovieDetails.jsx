@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { toast} from "react-toastify"
 import { useGetSpecificMovieQuery, useAddMovieReviewMutation } from "../../redux/api/movies"
+import MoviesTabs from "./MoviesTabs"
 
 const MovieDetails = () => {
     const { id: movieId} = useParams();
@@ -36,6 +37,21 @@ const MovieDetails = () => {
               {movie?.detail}
             </p>
           </section>
+          <div className="mr-[5rem]">
+            <p className="text-2xl font-semibold">Releasing Year : {movie?.year}</p>
+
+            <div>
+              {movie?.cast.map((c) => (
+                <ul key={c._id}>
+                  <li className="mt-[1rem]">{c}</li>
+                </ul>
+              ))}
+            </div>
+          </div>
+        </div>
+                
+        <div className="container ml-[20rem]">
+              <MoviesTabs loadingMovieReview={loadingMovieReview} userInfo={userInfo} submitHandler={submitHandler} rating={rating} setRating={setRating} comment={comment} setComment={setComment} movie={movie}/>
         </div>
       </div>
 
