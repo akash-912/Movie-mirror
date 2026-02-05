@@ -13,7 +13,24 @@ const MovieDetails = () => {
     const { userInfo} = useSelector((state) => state.auth);
     const [ createReview, { isLoading: loadingMovieReview}] = useAddMovieReviewMutation();    
     
+    const submitHandler = async (e) =>{
+      e.preventDefault();
 
+      try{
+        await createReview({
+          id: movieId,
+          rating,
+          comment,
+        }).unwrap();
+
+        refetch();
+
+        toast.success("Review created successfully");
+      }catch(error) {
+        const errorMsg = error?.data?.error || error?.data?.message || "An error occurred";
+  toast.error(errorMsg);
+      }
+    }
 
   return (
     <div>
@@ -41,8 +58,8 @@ const MovieDetails = () => {
             <p className="text-2xl font-semibold">Releasing Year : {movie?.year}</p>
 
             <div>
-              {movie?.cast.map((c) => (
-                <ul key={c._id}>
+              {movie?.cast.map((c,index) => (
+                <ul key={index}>
                   <li className="mt-[1rem]">{c}</li>
                 </ul>
               ))}

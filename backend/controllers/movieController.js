@@ -55,9 +55,12 @@ const movieReview = async(req,res) =>{
             const alreadyReviewed = movie.reviews.find((r) => r.user.toString() === req.user._id.toString());
         
 
-            if(alreadyReviewed){
-                res.status(400);
-                throw new Error("Movie already reviewed");
+            // if(alreadyReviewed){
+            //     res.status(400);
+            //     throw new Error("Movie already reviewed");
+            // }
+            if (alreadyReviewed) {
+                return res.status(400).json({ error: "Movie already reviewed" });
             }
             const review = {
                 name: req.user.username,
