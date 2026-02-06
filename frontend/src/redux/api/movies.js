@@ -32,10 +32,11 @@ export const moviesApiSlice = apiSlice.injectEndpoints({
         
         deleteComment: builder.mutation({
             query: ({movieId,reviewId}) => ({
-                url: `${MOVIE_URL}/delele-comment`,
+                url: `${MOVIE_URL}/delete-comment`,
                 method: "DELETE",
                 body: {movieId,reviewId},
             }),
+            invalidatesTags: ["Movies"],
         }),
 
         deleteMovie: builder.mutation({

@@ -52,10 +52,16 @@ export const usersApi = apiSlice.injectEndpoints({
         url: `${USERS_URL}/profile`,
         method: "PUT",
         body: data,
+      }),
+    }),
+
+    getUsers: builder.query({
+      query: () => ({
+        url: USERS_URL,
       })
     })
   }),
 });
 
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useProfileMutation } = usersApi;
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useProfileMutation , useGetUsersQuery} = usersApi;
